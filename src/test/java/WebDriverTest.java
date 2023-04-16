@@ -23,7 +23,6 @@ class WebDriverTest {
 
 
     @Test
-
     public void checkContainer() {
         //System.setProperties("webdriver.chrome.driver", "/Users/user/Documents/chromedriver_mac_arm64");
         WebDriver driver = new ChromeDriver();
