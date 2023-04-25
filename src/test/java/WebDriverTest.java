@@ -1,12 +1,12 @@
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -56,7 +56,7 @@ class WebDriverTest {
         List<WebElement> elements =  driver.findElements(By.xpath("//*[@id=\"container\"]/div/div/div/div/div[1]/div[4]/div/div[3]/div[1]/div/div"));
 
        // assertTrue(elements.contains("Ноутбуки, компьютеры, мониторы"), "Отсутствует элемент");
-       assertTrue(        elements.stream()
+       assertTrue(elements.stream()
                .map(WebElement::getText)
                .collect(Collectors.toList())
                .contains("Ноутбуки, компьютеры, мониторы"), "Отсутствует элемент");
@@ -67,4 +67,62 @@ class WebDriverTest {
                 .contains("Комплектующие"), "Отсутствует элемент");
         driver.close();
     }
+    @Test
+    public void sectorСheckComputerAndNetworksСhapterAccessories(){
+        WebDriver driver = new ChromeDriver();
+        driver.navigate().to("https://catalog.onliner.by/");
+        driver.manage().window().maximize();
+        String checkElement = "//*[@id=\"container\"]/div/div/div/div/div[1]/div[4]/div/div[3]/div[1]/div/div[2]/div[2]/div/a";
+
+        WebElement computerAndNetworksButton =
+                driver.findElement(By.xpath("//*[@id=\"container\"]/div/div/div/div/div[1]/ul/li[4]"));
+        computerAndNetworksButton.click();
+
+        WebElement computerAndNetworksButtonAccessories =
+                driver.findElement(By.xpath("//*[@id=\"container\"]/div/div/div/div/div[1]/div[4]/div/div[3]/div[1]/div/div[2]/div[1]"));
+        computerAndNetworksButtonAccessories.click();
+
+
+        System.out.println(computerAndNetworksButtonAccessories.getText());
+        List<WebElement> elements = driver.findElements(By.xpath(checkElement));
+        elements.stream()
+                .map(WebElement::getText)
+                .collect(Collectors.toList());
+
+        for (int j = 0; j < elements.size()-1; j++) {
+            Pattern pattern = Pattern.compile("[\\n]");
+            String[] words = pattern.split(elements.get(j).getText());
+            Arrays.stream(words)
+                    .toList();
+                   // .forEach(word -> System.out.println(word + "is not null")); //для проверки
+            for(String word:words){
+                System.out.println(word + "is not null"); //тоже для проверки
+                assertNotNull(word,"we have a problem");
+            }
+        }
+        driver.close();
+    }
+
+    @Test
+    public void checkHeadphones(){
+        WebDriver driver = new ChromeDriver();
+        driver.navigate().to("https://catalog.onliner.by/");
+        driver.manage().window().maximize();
+
+        WebElement electronics =
+                driver.findElement(By.xpath("//*[@id=\"container\"]/div/div/div/div/div[1]/ul/li[3]"));
+        electronics.click();
+
+        WebElement headphones =
+                driver.findElement(By.xpath("//*[@id=\"container\"]/div/div/div/div/div[1]/div[3]/div/div[2]/div[1]/div/div[4]"));
+        headphones.click();
+
+        WebElement headphonesItem =
+                driver.findElement(By.xpath("//*[@id=\"container\"]/div/div/div/div/div[1]/div[3]/div/div[2]/div[1]/div/div[4]/div[2]/div/a[1]"));
+        headphonesItem.click();
+
+
+
+    }
 }
+
