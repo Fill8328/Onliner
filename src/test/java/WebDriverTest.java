@@ -104,25 +104,39 @@ class WebDriverTest {
     }
 
     @Test
-    public void checkHeadphones(){
+    public void checkHeadphones() throws InterruptedException {
         WebDriver driver = new ChromeDriver();
         driver.navigate().to("https://catalog.onliner.by/");
         driver.manage().window().maximize();
 
-        WebElement electronics =
-                driver.findElement(By.xpath("//*[@id=\"container\"]/div/div/div/div/div[1]/ul/li[3]"));
-        electronics.click();
 
-        WebElement headphones =
-                driver.findElement(By.xpath("//*[@id=\"container\"]/div/div/div/div/div[1]/div[3]/div/div[2]/div[1]/div/div[4]"));
-        headphones.click();
+        driver.findElement(By.xpath("//*[@id=\"container\"]/div/div/div/div/div[1]/ul/li[3]")).click();
 
-        WebElement headphonesItem =
-                driver.findElement(By.xpath("//*[@id=\"container\"]/div/div/div/div/div[1]/div[3]/div/div[2]/div[1]/div/div[4]/div[2]/div/a[1]"));
-        headphonesItem.click();
+        driver.findElement(By.xpath("//*[@id=\"container\"]/div/div/div/div/div[1]/div[4]/div/div[2]/div[1]/div/div[4]/div[1]")).click();
+
+        driver.findElement(By.xpath("//*[@id=\"container\"]/div/div/div/div/div[1]/div[4]/div/div[2]/div[1]/div/div[4]/div[2]/div/a[1]")).click();
 
 
+        List<WebElement> headphones = driver.findElements(By.xpath("//*[contains(@class, 'schema-product__group')]"));
+        headphones.stream()
+                .map(WebElement::getText)
+                .collect(Collectors.toList());
+        for (int j = 0; j < headphones.size()-1; j++) {
+            Pattern pattern = Pattern.compile("[\\n]");
+            String[] words = pattern.split(headphones.get(j).getText());
+            Arrays.stream(words)
+                    .toList();
+                    //.forEach(word -> System.out.println(word + "is not null")); //для проверки
+            for(String word:words){
+                System.out.println(word + "is not null"); //тоже для проверки
+                assertNotNull(word,"we have a problem");
+            }
+        }
 
+        assertTrue(driver.findElement(By.xpath("//*[@id=\"schema-products\"]//img")).isDisplayed(), "Huston we have problem");
+
+
+       // driver.findElement(By.className("]")).getText().toString()
     }
 }
 
